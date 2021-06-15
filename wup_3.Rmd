@@ -1,7 +1,7 @@
 ---
 title: "Alcohol vs Seat choice"
-author: "Your Name"
-date: "Fall 2020"
+author: "Sasha Sanchez"
+date: "Summer 2021"
 output: html_document
 ---
 
@@ -27,7 +27,9 @@ basicCN <- ggplot(davisdata,aes(y=alcohol,x=Seat))
 ```{r}
 basicCN + geom_boxplot()
 ```
-  
+
+
+As shown in this boxplot we can see that the back row is higher up.    
   
 ### get fancy  
 
@@ -35,10 +37,39 @@ basicCN + geom_boxplot()
 basicCN + geom_boxplot(notch=TRUE,outlier.color = "red") + stat_boxplot(geom ='errorbar') + labs(title="Fancy notch boxplot \n with 2 lines")
 ```
 
+
+In this boxplot we can see that there is a difference of the box of the back row is slightly bigger than the first boxplot we saw above. 
+
+
 ## Numerical Summarys 
+
+```{r}
+favstats(alcohol~Seat,data=davisdata)
+```
+
+
+The back row is significantly different with their mean being at 9.6. The middle row is at a 3.2. The front row is at it's lowest being at 1.8  
 
 ## Inferential Tests
 
+```{r}
+model1 <- aov(alcohol~Seat,data=davisdata)
+summary.aov(model1)
+```
+
+
+
+We will reject the null hypothesis however, we will seek clarification on which rows were different from other rows. 
+
+
+```{r}
+plot(TukeyHSD(model1))
+```
+
+
+Using the Tukey plot box we can tell that the front is different from the back, and the middle from the back is different. However, there is no difference between the middle and the front. 
+
 ## Conclusions
 
+Because the categorical variable has more than 2 levels, we have to use anova, not a t-test. The anova showed there is a difference in alcohol consumption among the seat locations; Tukey HSD show that the differences were in the back row, and not much different compared in the middle and front. 
 
